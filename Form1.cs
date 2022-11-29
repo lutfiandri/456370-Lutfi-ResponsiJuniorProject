@@ -15,6 +15,8 @@ namespace Responsi
     {
         private NpgsqlConnection conn;
 
+        public NpgsqlConnection Conn { get => conn; }
+
         public Form1()
         {
             InitializeComponent();
@@ -26,7 +28,7 @@ namespace Responsi
         {
             try
             {
-                conn.Open();
+                Conn.Open();
                 Console.WriteLine("db connected");
                 //MessageBox.Show("db connected");
             }
@@ -64,7 +66,7 @@ namespace Responsi
                 }
 
                 var sql = "select * from insert_karyawan(:nama, :id_dep)";
-                var cmd = new NpgsqlCommand(sql, conn);
+                var cmd = new NpgsqlCommand(sql, Conn);
                 cmd.Parameters.AddWithValue("nama", inputNama.Text);
                 cmd.Parameters.AddWithValue("id_dep", idDep);
 
@@ -130,7 +132,7 @@ namespace Responsi
             try
             {
                 var sql = "select * from select_all_karyawan()";
-                var cmd = new NpgsqlCommand(sql, conn);
+                var cmd = new NpgsqlCommand(sql, Conn);
 
                 var data = cmd.ExecuteReader();
 
@@ -170,7 +172,7 @@ namespace Responsi
                 }
 
                 var sql = "select * from update_karyawan(:id, :nama, :id_dep)";
-                var cmd = new NpgsqlCommand(sql, conn);
+                var cmd = new NpgsqlCommand(sql, Conn);
                 cmd.Parameters.AddWithValue("id", Convert.ToInt32(inputKaryawanId.Text));
                 cmd.Parameters.AddWithValue("nama", inputNama.Text);
                 cmd.Parameters.AddWithValue("id_dep", idDep);
@@ -198,7 +200,7 @@ namespace Responsi
                 }
 
                 var sql = "select * from delete_karyawan(:id)";
-                var cmd = new NpgsqlCommand(sql, conn);
+                var cmd = new NpgsqlCommand(sql, Conn);
                 cmd.Parameters.AddWithValue("id", Convert.ToInt32(inputKaryawanId.Text));
 
                 if ((int)cmd.ExecuteScalar() == 1)
